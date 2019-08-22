@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "\"OrderBook\"")
@@ -12,6 +14,7 @@ public class OrderBook {
 	@Id
 	String OrderNumber;
 	String SecurityCode;
+	@Temporal(TemporalType.TIMESTAMP)
 	Date TradeTime;
 	Float Price;
 	String Direction;
@@ -20,18 +23,31 @@ public class OrderBook {
 	String PriceCondition;
 	String CustomerCode;
 	
-	public OrderBook(String securityCode, Date tradeTime, Float price, String direction,
-			int quantity, String priceCondition, String customerCode) {
+	
+
+	public String getCustomerCode() {
+		return CustomerCode;
+	}
+
+	public OrderBook(String orderNumber, String securityCode, Date tradeTime, Float price, String direction,
+			int quantity, String orderStatus, String priceCondition, String customerCode) {
 		super();
-		Date d = new Date();
-		OrderNumber = d.toString() + Math.random();
+		OrderNumber = orderNumber;
 		SecurityCode = securityCode;
-		TradeTime = new Date();
+		TradeTime = tradeTime;
 		Price = price;
 		Direction = direction;
 		Quantity = quantity;
-		OrderStatus = "Pending";
+		OrderStatus = orderStatus;
 		PriceCondition = priceCondition;
 		CustomerCode = customerCode;
+	}
+
+	public void setCustomerCode(String customerCode) {
+		CustomerCode = customerCode;
+	}
+
+	public OrderBook() {
+		super();
 	}
 }
