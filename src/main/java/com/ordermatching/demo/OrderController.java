@@ -27,7 +27,9 @@ public class OrderController {
 	public Map<String, String> newOrder(@RequestBody OrderBook orderbook) {
 		HashMap<String, String> map = new HashMap<>();
 		orderbook.setTradeTime(new Date());
+		orderbook.setOrderNumber(new Date()+""+Math.random());
 		try {
+			
 			repo.save(orderbook);
 			map.put("code", "1");
 		} catch(Exception e) {
@@ -39,5 +41,31 @@ public class OrderController {
 	@GetMapping("/getOrders")
 	public List<OrderBook> getOrdersOfUser(@RequestParam("id") String id) {
 		return repo.findOrdersById(id);
+	}
+	@CrossOrigin(origins = "http://localhost:8000")
+	@PostMapping("/update")
+	public Map<String, String> updateOrder(@RequestBody OrderBook orderbook) {
+		HashMap<String, String> map = new HashMap<>();
+		orderbook.setTradeTime(new Date());
+		try {	
+			repo.save(orderbook);
+			map.put("code", "1");
+		} catch(Exception e) {
+			map.put("code", "0");
+		}
+		return map;
+	}
+	@CrossOrigin(origins = "http://localhost:8000")
+	@PostMapping("/cancel")
+	public Map<String, String> cancelOrder(@RequestBody OrderBook orderbook){
+		HashMap<String, String> map=new HashMap<>();
+		orderbook.setOrderStatus("Cancelled");
+		try {
+			repo.save(orderbook);
+			map.put("code", "1");
+		}catch(Exception e) {
+			map.put("code", "0");
+		}
+		return map;
 	}
 }
