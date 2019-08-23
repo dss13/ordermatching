@@ -31,7 +31,7 @@ public class OrderController {
 			repo.save(orderbook);
 			map.put("code", "1");
 		} catch(Exception e) {
-			map.put("code", "0");
+			map.put("code", e.toString());
 		}
 		return map;		
 	}
