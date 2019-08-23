@@ -104,6 +104,42 @@ public class OrderController {
 	public Map<String, String> updateOrder(@RequestBody OrderBook orderbook) throws IOException{
 		HashMap<String, String> map = new HashMap<>();
 		orderbook.setTradeTime(new Date());
+		String timestamp = new SimpleDateFormat("yyMMddHHmmss").format(Calendar.getInstance().getTime());
+		Random rand= new Random();
+		String random = String.format("%04d",rand.nextInt(10000));
+		
+		/* Order Status updated */
+		String SecurityCode = orderbook.getSecurityCode();
+		SecuritiesMaster requiredSecurity = null;
+		List<SecuritiesMaster> tempSecurityList = (List<SecuritiesMaster>)securityRepo.findAll();
+		for(int i=0;i<tempSecurityList.size();i++) {
+			if(tempSecurityList.get(i).getSecurityCode().equals(SecurityCode))
+				requiredSecurity = tempSecurityList.get(i);
+		}
+		if(requiredSecurity == null) {
+			map.put("code", "0");
+			return map;
+		}
+		float SP = requiredSecurity.getSellingPrice();
+		float BP = requiredSecurity.getBuyingPrice();		
+		float price = orderbook.getPrice();
+		String status = orderbook.getOrderStatus();
+		if(orderbook.getDirection().equals("Buy") && status.equals("Pending"))
+		{
+			if(price < 0.9*BP || price > 1.1*BP)
+			{
+				status = "Rejected";
+			}
+		}
+		else if(orderbook.getDirection().equals("Sell") && status.equals("Pending"))
+		{
+			if(price < 0.9*SP || price > 1.1*SP)
+			{
+				status = "Rejected";
+			}
+		}
+		
+		orderbook.setOrderStatus(status);
 		try {	
 			repo.save(orderbook);
 			map.put("code", "1");

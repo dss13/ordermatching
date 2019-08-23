@@ -3,6 +3,7 @@ package com.ordermatching.demo;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ public class CustomerController {
 			map.put("token", ci.getCustomerCode());
 		} else {
 			map.put("code", "0");
+			
 //			String text="Invalid Login !";
 //			try (PrintWriter out = new PrintWriter("Exception.txt")) {
 //			    out.println(text);
