@@ -1,5 +1,8 @@
 package com.ordermatching.demo;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +38,7 @@ public class OrderController {
 	
 	@CrossOrigin(origins = "http://localhost:8000")
 	@PostMapping("/add")
-	public Map<String, String> newOrder(@RequestBody OrderBook orderbook) {
+	public Map<String, String> newOrder(@RequestBody OrderBook orderbook) throws IOException{
 		HashMap<String, String> map = new HashMap<>();
 		orderbook.setTradeTime(new Date());
 		
@@ -82,6 +85,11 @@ public class OrderController {
 			repo.save(orderbook);
 			map.put("code", "1");
 		} catch(Exception e) {
+//			String text=e.toString()+"..........in..........OrderController";
+//			FileWriter fileWriter = new FileWriter("Error.txt", true);	//Set true for append mode
+//		    try (PrintWriter out = new PrintWriter(fileWriter)) {
+//			    out.println(text);
+//			}
 			map.put("code", e.toString());
 		}
 		return map;		
@@ -93,26 +101,36 @@ public class OrderController {
 	}
 	@CrossOrigin(origins = "http://localhost:8000")
 	@PostMapping("/update")
-	public Map<String, String> updateOrder(@RequestBody OrderBook orderbook) {
+	public Map<String, String> updateOrder(@RequestBody OrderBook orderbook) throws IOException{
 		HashMap<String, String> map = new HashMap<>();
 		orderbook.setTradeTime(new Date());
 		try {	
 			repo.save(orderbook);
 			map.put("code", "1");
 		} catch(Exception e) {
+//			String text=e.toString()+"..........in..........OrderController";
+//			FileWriter fileWriter = new FileWriter("Error.txt", true);	//Set true for append mode
+//		    try (PrintWriter out = new PrintWriter(fileWriter)) {
+//			    out.println(text);
+//			}
 			map.put("code", "0");
 		}
 		return map;
 	}
 	@CrossOrigin(origins = "http://localhost:8000")
 	@PostMapping("/cancel")
-	public Map<String, String> cancelOrder(@RequestBody OrderBook orderbook){
+	public Map<String, String> cancelOrder(@RequestBody OrderBook orderbook) throws IOException{
 		HashMap<String, String> map=new HashMap<>();
 		orderbook.setOrderStatus("Cancelled");
 		try {
 			repo.save(orderbook);
 			map.put("code", "1");
 		}catch(Exception e) {
+//			String text=e.toString()+"..........in..........OrderController";
+//			FileWriter fileWriter = new FileWriter("Error.txt", true);	//Set true for append mode
+//		    try (PrintWriter out = new PrintWriter(fileWriter)) {
+//			    out.println(text);
+//			}
 			map.put("code", "0");
 		}
 		return map;

@@ -1,5 +1,8 @@
 package com.ordermatching.demo;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +25,7 @@ public class CustomerController {
 	@PostMapping("/auth")
 	public Map<String, String> checkUser(@RequestBody CustInfo custInfo) {
 		HashMap<String, String> map = new HashMap<>();
+		
 		CustInfo ci = repo.findByEmailAddress(custInfo.getEmailAddress());
 		String password1 = ci.getPassword();
 		String password2 = custInfo.getPassword();
@@ -31,6 +35,14 @@ public class CustomerController {
 			map.put("token", ci.getCustomerCode());
 		} else {
 			map.put("code", "0");
+//			String text="Invalid Login !";
+//			try (PrintWriter out = new PrintWriter("Exception.txt")) {
+//			    out.println(text);
+//			    out.close();
+//			}
+//			catch(IOException eon) {
+//				//System.out.println("\n---------------------dajsajkhska------------\n");
+//			}
 		}
 		return map;
 	}
